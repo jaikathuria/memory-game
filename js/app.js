@@ -1,6 +1,7 @@
-let card1;
-let card2;
+let card1 = null;
+let card2 = null;
 let currentRound = [];
+let matchedCards = 0;
 let counter = 0;
 const cards = ['fa fa-diamond', 'fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-anchor', 'fa fa-bolt', 'fa fa-bolt', 'fa fa-cube', 'fa fa-cube', 'fa fa-leaf', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-bicycle', 'fa fa-bomb', 'fa fa-bomb'];
 
@@ -37,7 +38,9 @@ $('.deck').on('click', 'li', function() {
     currentCard = $(this);
     showCard(currentCard);
     recordRound(currentCard);
-    
+    if (currentRound.length === 2) {
+        processRound(currentRound);
+    }
 });
   
 function showCard(card) {
@@ -55,6 +58,24 @@ function recordRound(card) {
     currentRound.push(cardType);
   }
 }
+
+function processRound(round) {
+  if (currentRound[0] === currentRound[1]) {
+    card1.addClass('match');
+    card2.addClass('match');
+    matchedCards += 2;
+  } else {
+    card1.toggleClass('show');
+    card2.toggleClass('show');
+  } 
+  currentRound = [];
+  card1 = null;
+  card2 = null;
+  counter++;
+}
+  
+
+
 
 
 /*
