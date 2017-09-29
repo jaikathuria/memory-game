@@ -33,6 +33,17 @@ function shuffle(array) {
   return array;
 }
 
+$('.restart').click(function() {
+  $('.card').remove();
+  card1 = null;
+  card2 = null;
+  currentRound = [];
+  matchedCards = 0;
+  turns = 0;
+  pass = true;
+  placeCards(cards);
+});
+
 $('.deck').on('click', 'li', function() {
   currentCard = $(this);
   recordRound(currentCard);
@@ -57,7 +68,6 @@ function recordRound(card) {
     cardType = $(card).children().attr("class");
     currentRound.push(cardType);
   } else {
-    debugger;
     if (card.attr('class') === card1.attr('class')) {
         $('.stars').html("Turns: " + turns + " Invalid Choice");
       setTimeout(function() {
@@ -115,7 +125,6 @@ function displayVictoryStars() {
 }
 
 
-//restart button
-//bug where you can click same card twice -if statement
 //bug where the second card does not stay shown -set timeout
 //add animation when cards are correct and incorrect matches -css transition
+//test for mobile compatibility
