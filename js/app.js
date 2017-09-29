@@ -2,28 +2,25 @@ let card1 = null;
 let card2 = null;
 let currentRound = [];
 let matchedCards = 0;
-let counter = 0;
+let turns = 0;
 const cards = ['fa fa-diamond', 'fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-anchor', 'fa fa-bolt', 'fa fa-bolt', 'fa fa-cube', 'fa fa-cube', 'fa fa-leaf', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-bicycle', 'fa fa-bomb', 'fa fa-bomb'];
 
 $(document).ready(placeCards(cards));
 
 function placeCards(cards) {
   cards = shuffle(cards);
-
   for (let i = 0; i < cards.length; i++) {
     $('.deck').append('<li class="card">');
     $('.deck li:last-child').append("<i></i>");
     $('.deck li:last-child i').addClass(cards[i]);
   }
+  $('.stars').html("Turns: 0");
 }
-
-// Shuffle function from http://stackoverflow.com/a/2450976
 
 function shuffle(array) {
   let currentIndex = array.length;
   let temporaryValue;
   let randomIndex;
-
   while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
@@ -35,12 +32,12 @@ function shuffle(array) {
 }
 
 $('.deck').on('click', 'li', function() {
-    currentCard = $(this);
-    showCard(currentCard);
-    recordRound(currentCard);
-    if (currentRound.length === 2) {
-        processRound(currentRound);
-    }
+  currentCard = $(this);
+  showCard(currentCard);
+  recordRound(currentCard);
+  if (currentRound.length === 2) {
+    processRound(currentRound);
+  }
 });
   
 function showCard(card) {
@@ -71,20 +68,38 @@ function processRound(round) {
   currentRound = [];
   card1 = null;
   card2 = null;
-  counter++;
+  turns++;
+  updateState();
+}
+
+function updateState() {
+  $('.stars').html("Turns: " + turns);
+  $('.stars').prepend('<span></span>');
+  $('.stars').append('<span></span>');
+  if (matchedCards === 16) {
+    displayVictoryStars();
+  }
 }
   
+function displayVictoryStars() {
+  let stars = 0;
+  if (turns < 11) {
+      stars = 3;
+  } else if (turns < 16) {
+      stars = 2;
+  } else if (turns < 21) {
+      stars = 1;
+  }
+  for (let i = 0; i < stars; i++) {
+    $('.stars').append('<li class="card">');
+    $('.stars li:last-child').append("<i></i>");
+    $('.stars li:last-child i').addClass('fa fa-star');
+  }
+  $('.restart').prepend('<span>Well Done!</span><span>Play Again?</span><span></span>');
+}
 
 
 
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+//bug where you can click same card twice -if statement
+//bug where the second card does not stay shown -set timeout
+//add adimation when cards are correct and incorrect matches -css transition
