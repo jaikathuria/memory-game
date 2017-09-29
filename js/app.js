@@ -3,6 +3,7 @@ let card2 = null;
 let currentRound = [];
 let matchedCards = 0;
 let turns = 0;
+let pass = true;
 const cards = ['fa fa-diamond', 'fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-anchor', 'fa fa-bolt', 'fa fa-bolt', 'fa fa-cube', 'fa fa-cube', 'fa fa-leaf', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-bicycle', 'fa fa-bomb', 'fa fa-bomb'];
 
 $(document).ready(placeCards(cards));
@@ -11,6 +12,7 @@ function placeCards(cards) {
   cards = shuffle(cards);
   for (let i = 0; i < cards.length; i++) {
     $('.deck').append('<li class="card">');
+    $('.deck li:last-child').addClass('a' + i);
     $('.deck li:last-child').append("<i></i>");
     $('.deck li:last-child i').addClass(cards[i]);
   }
@@ -33,8 +35,12 @@ function shuffle(array) {
 
 $('.deck').on('click', 'li', function() {
   currentCard = $(this);
-  showCard(currentCard);
   recordRound(currentCard);
+  if (pass === true) {
+      showCard(currentCard);
+  } else {
+      pass = true;
+  }
   if (currentRound.length === 2) {
     processRound(currentRound);
   }
@@ -45,14 +51,24 @@ function showCard(card) {
 };
 
 function recordRound(card) {
+  let cardType = null;
   if (currentRound.length === 0) {
     card1 = card;
     cardType = $(card).children().attr("class");
     currentRound.push(cardType);
   } else {
-    card2 = card;
-    cardType = $(card).children().attr("class");
-    currentRound.push(cardType);
+    debugger;
+    if (card.attr('class') === card1.attr('class')) {
+        $('.stars').html("Turns: " + turns + " Invalid Choice");
+      setTimeout(function() {
+        $('.stars').html("Turns: " + turns);
+      }, 1500);
+      pass = false;
+    } else {
+      card2 = card;
+      cardType = $(card).children().attr("class");
+      currentRound.push(cardType);
+    }
   }
 }
 
@@ -74,8 +90,8 @@ function processRound(round) {
 
 function updateState() {
   $('.stars').html("Turns: " + turns);
-  $('.stars').prepend('<span></span>');
-  $('.stars').append('<span></span>');
+  $('.stars').prepend('<span class=".stats"></span>');
+  $('.stars').append('<span class=".stats"></span>');
   if (matchedCards === 16) {
     displayVictoryStars();
   }
@@ -95,11 +111,11 @@ function displayVictoryStars() {
     $('.stars li:last-child').append("<i></i>");
     $('.stars li:last-child i').addClass('fa fa-star');
   }
-  $('.restart').prepend('<span>Well Done!</span><span>Play Again?</span><span></span>');
+  $('.restart').prepend('<span class=".stats">Well Done!</span><span class=".stats">Play Again?</span><span class=".stats"></span>');
 }
 
 
-
+//restart button
 //bug where you can click same card twice -if statement
 //bug where the second card does not stay shown -set timeout
-//add adimation when cards are correct and incorrect matches -css transition
+//add animation when cards are correct and incorrect matches -css transition
