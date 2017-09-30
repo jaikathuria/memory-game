@@ -1,12 +1,18 @@
 # Memory Game Project
 
-## Table of Contents
+## Game Instructions
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+User clicks the cards to reveal the picture on the other side.  Select two of the same pictures in a row to create a match.  Once all cards are selected the game is over and the victory stats are displayed.  
 
-## Instructions
+## Desired Functionality 
 
-User clicks the cards to reveal the picture on the other side.  Select two of the same pictures in a row to create a match.  
+* Multiplayer _Hotseat_
+* Sounds
+* User Login
+* Leaderboard _Fewest Turns_
+* User Win Loss Record Tracker
 
-## Contributing
+
+## Known Bugs
+
+Currently none known

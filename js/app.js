@@ -82,14 +82,17 @@ function recordRound(card) {
   }
 }
 
+
 function processRound(round) {
   if (currentRound[0] === currentRound[1]) {
-    card1.addClass('match');
-    card2.addClass('match');
+    card1.addClass('match animated pulse');
+    card2.addClass('match animated pulse');
     matchedCards += 2;
+    match();
   } else {
-    card1.toggleClass('show');
-    card2.toggleClass('show');
+    card1.addClass('animated ' + 'shake');
+    card2.addClass('animated ' + 'shake');
+    misMatch();
   } 
   currentRound = [];
   card1 = null;
@@ -106,6 +109,22 @@ function updateState() {
     displayVictoryStars();
   }
 }
+
+function match() {
+  setTimeout(function() {
+    card1.removeClass('animated ' + 'pulse');
+    card2.removeClass('animated ' + 'pulse');
+  }, 2000);
+};
+
+function misMatch() {
+  setTimeout(function() {
+    card1.removeClass('animated ' + 'shake');
+    card2.removeClass('animated ' + 'shake');
+    card1.toggleClass('show');
+    card2.toggleClass('show');
+  }, 2000);
+};
   
 function displayVictoryStars() {
   let stars = 0;
@@ -123,8 +142,3 @@ function displayVictoryStars() {
   }
   $('.restart').prepend('<span class=".stats">Well Done!</span><span class=".stats">Play Again?</span><span class=".stats"></span>');
 }
-
-
-//bug where the second card does not stay shown -set timeout
-//add animation when cards are correct and incorrect matches -css transition
-//test for mobile compatibility
